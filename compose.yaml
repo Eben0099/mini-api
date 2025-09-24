@@ -1,0 +1,52 @@
+services:
+  database:
+    container_name: database-api
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: mini_api
+      MYSQL_USER: symfony
+      MYSQL_PASSWORD: symfony
+    ports:
+      - '4310:3306'   # Port MySQL local -> container
+    volumes:
+      - ./mysql:/var/lib/mysql
+
+  php:
+    container_name: php-api
+    build:
+      context: ./php
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "8090:80"     # HTTP
+      - "8450:443"    # HTTPS
+    volumes:
+      - ./apache/default.conf:/etc/apache2/sites-enabled/000-default.conf
+      - ./apache/default-ssl.conf:/etc/apache2/sites-enabled/000-default-ssl.conf
+      - ./etc/ssl:/etc/ssl
+      - .:/var/www
+    depends_on:
+      - database
+
+  phpma:
+    container_name: phpmyadmin-api
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    environment:
+      PMA_ARBITRARY: 1
+      PMA_HOST: database
+      PMA_USER: root
+      PMA_PASSWORD: secret
+      UPLOAD_LIMIT: 20M
+    ports:
+      - "8898:80"
+
+  mailhog:
+    container_name: mailhog-api
+    image: mailhog/mailhog
+    restart: always
+    ports:
+      - "1026:1025"
+      - "8026:8025"

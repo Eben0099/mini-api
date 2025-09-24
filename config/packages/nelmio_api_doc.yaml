@@ -1,0 +1,71 @@
+nelmio_api_doc:
+    documentation:
+        info:
+            title: Mini API - Salon Booking System
+            description: |
+                API REST pour un système de réservation de salons de coiffure/beauté.
+                
+                ## Authentification
+                Cette API utilise l'authentification JWT (JSON Web Token).
+                
+                Pour s'authentifier:
+                1. Créer un compte via `/api/auth/register`
+                2. Se connecter via `/api/auth/login` pour obtenir un token JWT
+                3. Inclure le token dans l'en-tête Authorization: `Bearer {token}`
+                
+                ## Refresh Token
+                Utilisez `/api/auth/refresh` avec votre refresh token pour obtenir un nouveau JWT.
+                
+                ## Endpoints Publics
+                - Inscription et connexion
+                - Vérification d'email
+                - Réinitialisation de mot de passe
+                
+                ## Endpoints Protégés  
+                - Profil utilisateur (`/api/auth/me`)
+                - Gestion des réservations
+                - Administration
+            version: '1.0.0'
+            contact:
+                name: Support API
+                email: support@mini-api.com
+        servers:
+            - url: http://localhost:8090
+              description: Serveur de développement
+            - url: https://localhost:8450
+              description: Serveur de développement (HTTPS)
+        components:
+            securitySchemes:
+                Bearer:
+                    type: http
+                    scheme: bearer
+                    bearerFormat: JWT
+                    description: 'Token JWT obtenu via /api/auth/login'
+    areas:
+        path_patterns:
+            - ^/api(?!/doc$) # Documenter toutes les routes /api sauf /api/doc
+    models:
+        names:
+            - { alias: UserCreateDto, type: App\DTO\Request\UserCreateDto }
+            - { alias: LoginRequest, type: App\DTO\Request\LoginRequestDto }
+            - { alias: AdminCreateDto, type: App\DTO\Request\AdminCreateDto }
+            - { alias: PasswordForgotRequest, type: App\DTO\Request\PasswordForgotRequestDto }
+            - { alias: PasswordResetRequest, type: App\DTO\Request\PasswordResetRequestDto }
+            - { alias: UserResponse, type: App\DTO\Response\UserResponseDto }
+            - { alias: AuthResponse, type: App\DTO\Response\AuthResponseDto }
+            - { alias: LoginResponse, type: App\DTO\Response\LoginResponseDto }
+            - { alias: ErrorResponse, type: App\DTO\Response\ErrorResponseDto }
+            - { alias: BookingCreateDto, type: App\DTO\Request\BookingCreateDto }
+            - { alias: BookingResponseDto, type: App\DTO\Response\BookingResponseDto }
+            - { alias: SalonCreateDto, type: App\DTO\Request\SalonCreateDto }
+            - { alias: SalonUpdateDto, type: App\DTO\Request\SalonUpdateDto }
+            - { alias: SalonResponseDto, type: App\DTO\Response\SalonResponseDto }
+            - { alias: SalonListDto, type: App\DTO\Response\SalonListDto }
+            - { alias: ServiceCreateDto, type: App\DTO\Request\ServiceCreateDto }
+            - { alias: ServiceUpdateDto, type: App\DTO\Request\ServiceUpdateDto }
+            - { alias: ServiceResponseDto, type: App\DTO\Response\ServiceResponseDto }
+            - { alias: StylistCreateDto, type: App\DTO\Request\StylistCreateDto }
+            - { alias: StylistResponseDto, type: App\DTO\Response\StylistResponseDto }
+            - { alias: AvailabilityResponseDto, type: App\DTO\Response\AvailabilityResponseDto }
+            - { alias: WaitlistEntryCreateDto, type: App\DTO\Request\WaitlistEntryCreateDto }
+            - { alias: AvailabilityExceptionCreateDto, type: App\DTO\Request\AvailabilityExceptionCreateDto }

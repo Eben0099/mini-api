@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nouvelle réservation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #2c3e50;
+        }
+        .booking-details {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+            border-left: 4px solid #28a745;
+        }
+        .client-info {
+            background-color: #fff3cd;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+        }
+        .highlight {
+            color: #28a745;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📅 Nouvelle réservation</h1>
+            <p>Bonjour {{ stylist.user.firstName }},</p>
+        </div>
+
+        <p>Une nouvelle réservation a été effectuée pour votre salon :</p>
+
+        <div class="booking-details">
+            <h3>📋 Détails de la réservation</h3>
+            <p><strong>Client :</strong> {{ client.firstName }} {{ client.lastName }}</p>
+            <p><strong>Email client :</strong> {{ client.email }}</p>
+            <p><strong>Téléphone client :</strong> {{ client.phone ?: 'Non spécifié' }}</p>
+            <p><strong>Service :</strong> {{ service.name }}</p>
+            <p><strong>Date et heure :</strong> {{ startAt|date('d/m/Y H:i') }}</p>
+            <p><strong>Durée :</strong> {{ service.durationMinutes }} minutes</p>
+            <p><strong>Fin prévue :</strong> {{ endAt|date('H:i') }}</p>
+        </div>
+
+        <div class="client-info">
+            <h3>👤 Informations client</h3>
+            <p><strong>Nom complet :</strong> {{ client.firstName }} {{ client.lastName }}</p>
+            <p><strong>Email :</strong> <a href="mailto:{{ client.email }}">{{ client.email }}</a></p>
+            {% if client.phone %}
+            <p><strong>Téléphone :</strong> <a href="tel:{{ client.phone }}">{{ client.phone }}</a></p>
+            {% endif %}
+        </div>
+
+        <div style="background-color: #d1ecf1; padding: 15px; border-radius: 5px; margin: 20px 0;">
+            <h4>💡 Rappels importants</h4>
+            <ul>
+                <li>Le client a été informé de cette réservation par email</li>
+                <li>Préparez-vous pour le service demandé</li>
+                <li>En cas d'empêchement, contactez le salon immédiatement</li>
+                <li>Le client peut annuler jusqu'à 2h avant le rendez-vous</li>
+            </ul>
+        </div>
+
+        <p>Nous comptons sur vous pour offrir une excellente expérience à {{ client.firstName }} !</p>
+
+        <p>Cordialement,<br>
+        <strong>L'équipe {{ salon.name }}</strong></p>
+
+        <div class="footer">
+            <p>Cet email a été envoyé automatiquement par notre système de réservation.</p>
+            <p>ID Réservation : {{ booking.id }}</p>
+        </div>
+    </div>
+</body>
+</html>

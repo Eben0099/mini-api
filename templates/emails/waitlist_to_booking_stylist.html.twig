@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Nouvelle réservation depuis la liste d'attente</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
+        .content { background: #f9f9f9; padding: 30px; border-radius: 0 0 10px 10px; }
+        .booking-details { background: white; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #f5576c; }
+        .client-info { background: #e8f4fd; padding: 15px; border-radius: 8px; margin: 15px 0; }
+        .highlight { color: #f5576c; font-weight: bold; }
+        .footer { text-align: center; margin-top: 30px; color: #666; font-size: 12px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📋 Nouvelle réservation</h1>
+            <h2>Depuis la liste d'attente</h2>
+        </div>
+
+        <div class="content">
+            <p>Bonjour <strong>{{ stylist.user.firstName }} {{ stylist.user.lastName }}</strong>,</p>
+
+            <p>Une nouvelle réservation a été automatiquement créée depuis la liste d'attente suite à l'annulation d'un rendez-vous.</p>
+
+            <div class="booking-details">
+                <h3>📅 Détails du rendez-vous</h3>
+                <p><strong>Salon :</strong> {{ salon.name }}</p>
+                <p><strong>Date et heure :</strong> {{ booking.startAt|date('d/m/Y à H:i') }} - {{ booking.endAt|date('H:i') }}</p>
+                <p><strong>Service :</strong> {{ service.name }}</p>
+                <p><strong>Durée :</strong> {{ service.durationMinutes }} minutes</p>
+                <p><strong>Statut :</strong> <span class="highlight">CONFIRMÉ</span></p>
+            </div>
+
+            <div class="client-info">
+                <h3>👤 Informations client</h3>
+                <p><strong>Nom :</strong> {{ client.firstName }} {{ client.lastName }}</p>
+                <p><strong>Email :</strong> {{ client.email }}</p>
+                <p><strong>Téléphone :</strong> {{ client.phone ?: 'Non fourni' }}</p>
+                <p><strong>En liste d'attente depuis :</strong> {{ waitlistEntry.createdAt|date('d/m/Y à H:i') }}</p>
+                <p><strong>Plage souhaitée :</strong> {{ waitlistEntry.desiredStartRangeStart|date('d/m/Y H:i') }} - {{ waitlistEntry.desiredStartRangeEnd|date('d/m/Y H:i') }}</p>
+            </div>
+
+            <p>Le client a été automatiquement notifié de l'attribution de ce créneau. Il devrait confirmer sa venue.</p>
+
+            <p>Si vous avez des questions ou des contraintes particulières, contactez le salon.</p>
+
+            <p>Bonne journée,<br>
+            <strong>L'équipe {{ salon.name }}</strong></p>
+        </div>
+
+        <div class="footer">
+            <p>Cet email a été envoyé automatiquement. Ne pas répondre directement à cet email.</p>
+            <p>Pour contacter le salon : {{ salon.email ?: 'contact@salon.com' }}</p>
+        </div>
+    </div>
+</body>
+</html>

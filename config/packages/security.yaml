@@ -1,0 +1,95 @@
+security:
+    # https://symfony.com/doc/current/security.html#registering-the-user-hashing-passwords
+    enable_authenticator_manager: true
+    password_hashers:
+        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
+    # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
+    providers:
+      app_user_provider:
+        entity:
+          class: App\Entity\User
+          property: email
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        # Firewalls spécialisés (doivent venir avant le firewall général api)
+        api_login:
+          pattern: ^/api/auth/login$
+          stateless: true
+          json_login:
+            check_path: /api/auth/login
+            username_path: email
+            password_path: password
+            success_handler: lexik_jwt_authentication.handler.authentication_success
+            failure_handler: lexik_jwt_authentication.handler.authentication_failure
+
+        api_refresh:
+          pattern: ^/api/auth/refresh$
+          stateless: true
+          security: false
+
+        # Routes API publiques (inscription, vérification email, etc.)
+        api_public:
+          pattern: ^/api/auth/(register|verify-email|resend-verification)
+          stateless: true
+          security: false
+
+        # Routes API documentaires
+        api_doc:
+          pattern: ^/api/doc
+          stateless: true
+          security: false
+
+        # Routes API salons publiques (pas d'authentification requise)
+        api_salons_public:
+          pattern: ^/api/v1/salons(/(.*))?$|^/api/v1/salons$
+          stateless: true
+          security: false
+
+        # Toutes les autres routes API nécessitent JWT
+        api_protected:
+          pattern: ^/api
+          stateless: true
+          jwt: ~
+          entry_point: jwt
+
+        main:
+            pattern: ^/
+            lazy: true
+            provider: app_user_provider
+            http_basic: ~
+
+            # activate different ways to authenticate
+            # https://symfony.com/doc/current/security.html#the-firewall
+
+            # https://symfony.com/doc/current/security/impersonating_user.html
+            # switch_user: true
+
+    # Easy way to control access for large sections of your site
+    # Note: Only the *first* access control that matches will be used
+    access_control:
+      - { path: ^/api/auth/login, roles: PUBLIC_ACCESS }
+      - { path: ^/api/auth/register, roles: PUBLIC_ACCESS }
+      - { path: ^/api/auth/verify-email, roles: PUBLIC_ACCESS }
+      - { path: ^/api/auth/resend-verification, roles: PUBLIC_ACCESS }
+      - { path: ^/api/doc, roles: PUBLIC_ACCESS }
+      - { path: ^/api/auth/me, roles: IS_AUTHENTICATED_FULLY }
+      - { path: ^/api/v1/salons, roles: IS_AUTHENTICATED_FULLY }  # Autres opérations salons nécessitent authentification
+      - { path: ^/api/v1, roles: IS_AUTHENTICATED_FULLY }  # Toute l'API v1 nécessite authentification
+        # - { path: ^/admin, roles: ROLE_ADMIN }
+        # - { path: ^/profile, roles: ROLE_USER }
+
+when@test:
+    security:
+        password_hashers:
+            # By default, password hashers are resource intensive and take time. This is
+            # important to generate secure password hashes. In tests however, secure hashes
+            # are not important, waste resources and increase test times. The following
+            # reduces the work factor to the lowest possible values.
+            Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface:
+                algorithm: auto
+                cost: 4 # Lowest possible value for bcrypt
+                time_cost: 3 # Lowest possible value for argon
+                memory_cost: 10 # Lowest possible value for argon

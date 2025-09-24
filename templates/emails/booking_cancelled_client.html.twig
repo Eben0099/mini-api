@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Annulation de réservation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #dc3545;
+        }
+        .booking-details {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+            border-left: 4px solid #dc3545;
+        }
+        .reason-box {
+            background-color: #f8d7da;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            border-left: 4px solid #dc3545;
+        }
+        .next-steps {
+            background-color: #d1ecf1;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>❌ Annulation de réservation</h1>
+            <p>Bonjour {{ client.firstName }} {{ client.lastName }},</p>
+        </div>
+
+        <p>Nous vous informons que votre réservation a été annulée.</p>
+
+        <div class="booking-details">
+            <h3>📅 Détails de la réservation annulée</h3>
+            <p><strong>Salon :</strong> {{ salon.name }}</p>
+            <p><strong>Coiffeur :</strong> {{ stylist.user.firstName }} {{ stylist.user.lastName }}</p>
+            <p><strong>Service :</strong> {{ service.name }}</p>
+            <p><strong>Date et heure prévue :</strong> {{ startAt|date('d/m/Y H:i') }}</p>
+            <p><strong>Durée :</strong> {{ service.durationMinutes }} minutes</p>
+        </div>
+
+        {% if reason %}
+        <div class="reason-box">
+            <h4>ℹ️ Raison de l'annulation</h4>
+            <p>{{ reason }}</p>
+        </div>
+        {% endif %}
+
+        <div class="next-steps">
+            <h4>🔄 Prochaines étapes</h4>
+            <ul>
+                <li>Vous pouvez prendre un nouveau rendez-vous quand vous le souhaitez</li>
+                <li>Consultez nos disponibilités en ligne</li>
+                <li>Contactez-nous si vous avez des questions</li>
+                <li>En cas de problème, n'hésitez pas à nous appeler</li>
+            </ul>
+        </div>
+
+        <p>Nous sommes désolés pour ce désagrément et espérons vous revoir bientôt dans notre salon.</p>
+
+        <p>Cordialement,<br>
+        <strong>L'équipe {{ salon.name }}</strong></p>
+
+        <div class="footer">
+            <p>Cet email a été envoyé automatiquement par notre système de réservation.</p>
+            <p>ID Réservation annulée : {{ booking.id }}</p>
+        </div>
+    </div>
+</body>
+</html>

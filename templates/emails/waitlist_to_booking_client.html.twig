@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>🎉 Bonne nouvelle ! Votre créneau s'est libéré</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
+        .content { background: #f9f9f9; padding: 30px; border-radius: 0 0 10px 10px; }
+        .booking-details { background: white; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #667eea; }
+        .highlight { color: #667eea; font-weight: bold; }
+        .footer { text-align: center; margin-top: 30px; color: #666; font-size: 12px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎉 Bonne nouvelle !</h1>
+            <h2>Votre créneau s'est libéré</h2>
+        </div>
+
+        <div class="content">
+            <p>Bonjour <strong>{{ client.firstName }} {{ client.lastName }}</strong>,</p>
+
+            <p>Excellente nouvelle ! Un créneau s'est libéré et nous avons pu vous attribuer automatiquement la réservation que vous attendiez.</p>
+
+            <div class="booking-details">
+                <h3>📅 Détails de votre réservation</h3>
+                <p><strong>Salon :</strong> {{ salon.name }}</p>
+                <p><strong>Adresse :</strong> {{ salon.address }}</p>
+                <p><strong>Coiffeur :</strong> {{ stylist.user.firstName }} {{ stylist.user.lastName }}</p>
+                <p><strong>Service :</strong> {{ service.name }}</p>
+                <p><strong>Durée :</strong> {{ service.durationMinutes }} minutes</p>
+                <p><strong>Date et heure :</strong> {{ booking.startAt|date('d/m/Y à H:i') }} - {{ booking.endAt|date('H:i') }}</p>
+                <p><strong>Statut :</strong> <span class="highlight">CONFIRMÉ</span></p>
+            </div>
+
+            <p>Vous étiez inscrit(e) en liste d'attente depuis le {{ waitlistEntry.createdAt|date('d/m/Y à H:i') }} avec une plage souhaitée du {{ waitlistEntry.desiredStartRangeStart|date('d/m/Y H:i') }} au {{ waitlistEntry.desiredStartRangeEnd|date('d/m/Y H:i') }}.</p>
+
+            <p>Nous sommes ravis de pouvoir vous accueillir ! Si vous avez des questions, n'hésitez pas à nous contacter.</p>
+
+            <p>À très bientôt,<br>
+            <strong>L'équipe {{ salon.name }}</strong></p>
+        </div>
+
+        <div class="footer">
+            <p>Cet email a été envoyé automatiquement. Ne pas répondre directement à cet email.</p>
+            <p>Si vous avez des questions, contactez-nous à {{ salon.email ?: 'contact@salon.com' }}</p>
+        </div>
+    </div>
+</body>
+</html>
