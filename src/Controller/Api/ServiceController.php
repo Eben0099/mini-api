@@ -31,7 +31,6 @@ class ServiceController extends AbstractController
     ) {}
 
     #[Route('/salons/{salonId}/services', name: 'api_services_create', methods: ['POST'])]
-    #[IsGranted('ROLE_OWNER')]
     #[OA\Post(
         path: "/api/v1/salons/{salonId}/services",
         summary: "Créer un service",
@@ -75,6 +74,11 @@ class ServiceController extends AbstractController
     )]
     public function create(Request $request, int $salonId): JsonResponse
     {
+        // Vérification manuelle du rôle ROLE_OWNER
+        if (!$this->isGranted('ROLE_OWNER')) {
+            return $this->json(['error' => 'Accès refusé - Seuls les propriétaires peuvent créer des services'], Response::HTTP_FORBIDDEN);
+        }
+
         // Récupérer le salon via le repository
         $salon = $this->salonRepository->find($salonId);
 
@@ -124,7 +128,6 @@ class ServiceController extends AbstractController
     }
 
     #[Route('/services/{id}', name: 'api_service_update', methods: ['PATCH'])]
-    #[IsGranted('ROLE_OWNER')]
     #[OA\Patch(
         path: "/api/v1/services/{id}",
         summary: "Modifier un service",
@@ -159,6 +162,11 @@ class ServiceController extends AbstractController
     )]
     public function update(Request $request, Service $service): JsonResponse
     {
+        // Vérification manuelle du rôle ROLE_OWNER
+        if (!$this->isGranted('ROLE_OWNER')) {
+            return $this->json(['error' => 'Accès refusé - Seuls les propriétaires peuvent modifier des services'], Response::HTTP_FORBIDDEN);
+        }
+
         // Vérifier que l'utilisateur peut gérer le salon de ce service
         if (!$this->isGranted('SALON_MANAGE', $service->getSalon())) {
             return $this->json(['error' => 'Accès refusé'], Response::HTTP_FORBIDDEN);
@@ -208,7 +216,6 @@ class ServiceController extends AbstractController
     }
 
     #[Route('/services/{id}', name: 'api_service_delete', methods: ['DELETE'])]
-    #[IsGranted('ROLE_OWNER')]
     #[OA\Delete(
         path: "/api/v1/services/{id}",
         summary: "Supprimer un service",
@@ -242,6 +249,11 @@ class ServiceController extends AbstractController
     )]
     public function delete(Service $service): JsonResponse
     {
+        // Vérification manuelle du rôle ROLE_OWNER
+        if (!$this->isGranted('ROLE_OWNER')) {
+            return $this->json(['error' => 'Accès refusé - Seuls les propriétaires peuvent supprimer des services'], Response::HTTP_FORBIDDEN);
+        }
+
         // Vérifier que l'utilisateur peut gérer le salon de ce service
         if (!$this->isGranted('SALON_MANAGE', $service->getSalon())) {
             return $this->json(['error' => 'Accès refusé'], Response::HTTP_FORBIDDEN);

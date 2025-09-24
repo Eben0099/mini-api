@@ -28,7 +28,6 @@ class AvailabilityExceptionController extends AbstractController
     ) {}
 
     #[Route('', name: 'api_availability_exceptions_create', methods: ['POST'])]
-    #[IsGranted('ROLE_OWNER')]
     #[OA\Post(
         path: "/api/v1/availability-exceptions",
         summary: "Créer une exception de disponibilité",
@@ -68,6 +67,10 @@ class AvailabilityExceptionController extends AbstractController
     )]
     public function create(Request $request): JsonResponse
     {
+        // Vérification manuelle du rôle ROLE_OWNER
+        if (!$this->isGranted('ROLE_OWNER')) {
+            return $this->json(['error' => 'Accès refusé - Seuls les propriétaires peuvent créer des exceptions de disponibilité'], Response::HTTP_FORBIDDEN);
+        }
         $createDto = $this->serializer->deserialize(
             $request->getContent(),
             AvailabilityExceptionCreateDto::class,

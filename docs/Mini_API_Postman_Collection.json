@@ -1,0 +1,140 @@
+{
+  "info": {
+    "name": "Mini API",
+    "description": "Collection de requêtes pour tester toutes les fonctionnalités de l'API Symfony.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Authentification",
+      "item": [
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/auth/login",
+              "host": [ "{{base_url}}" ],
+              "path": [ "api", "auth", "login" ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"owner1@example.com\",\n  \"password\": \"votre_mot_de_passe\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/auth/register",
+              "host": [ "{{base_url}}" ],
+              "path": [ "api", "auth", "register" ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"nouvel_utilisateur@example.com\",\n  \"password\": \"motdepasse\",\n  \"firstName\": \"Prénom\",\n  \"lastName\": \"Nom\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Refresh Token",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/auth/refresh",
+              "host": [ "{{base_url}}" ],
+              "path": [ "api", "auth", "refresh" ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refresh_token\": \"{{refresh_token}}\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Salons",
+      "item": [
+        {
+          "name": "Créer un salon",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/salons",
+              "host": [ "{{base_url}}" ],
+              "path": [ "api", "v1", "salons" ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Salon Test\",\n  \"address\": \"1 rue de la Paix\",\n  \"city\": \"Paris\",\n  \"postalCode\": \"75001\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Lister les salons",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/salons",
+              "host": [ "{{base_url}}" ],
+              "path": [ "api", "v1", "salons" ]
+            }
+          }
+        },
+        {
+          "name": "Détail d'un salon",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/salons/{{salon_id}}",
+              "host": [ "{{base_url}}" ],
+              "path": [ "api", "v1", "salons", "{{salon_id}}" ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Utilisateur",
+      "item": [
+        {
+          "name": "Profil utilisateur",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/auth/me",
+              "host": [ "{{base_url}}" ],
+              "path": [ "api", "auth", "me" ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
+

@@ -129,9 +129,13 @@ class SalonController extends AbstractController
     }
 
     #[Route('', name: 'api_salon_create', methods: ['POST'])]
-    #[IsGranted('ROLE_OWNER')]
     public function create(Request $request): JsonResponse
     {
+        // Vérification manuelle du rôle ROLE_OWNER
+        if (!$this->isGranted('ROLE_OWNER')) {
+            return $this->json(['error' => 'Accès refusé - Seuls les propriétaires peuvent créer des salons'], Response::HTTP_FORBIDDEN);
+        }
+
         $createDto = $this->serializer->deserialize(
             $request->getContent(),
             SalonCreateDto::class,

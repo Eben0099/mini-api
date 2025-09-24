@@ -43,10 +43,10 @@ security:
           security: false
 
         # Routes API salons publiques (pas d'authentification requise)
-        api_salons_public:
-          pattern: ^/api/v1/salons(/(.*))?$|^/api/v1/salons$
-          stateless: true
-          security: false
+        # api_salons_public:
+        #   pattern: ^/api/v1/salons(/(.*))?$|^/api/v1/salons$
+        #   stateless: true
+        #   security: false
 
         # Toutes les autres routes API nécessitent JWT
         api_protected:
